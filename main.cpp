@@ -13,17 +13,46 @@ int main(){
     std::cin.tie(nullptr);
 
     SkipList<long long> sl;
-    char op;
-    long long x;
-    while (std::cin >> op >> x) {
-        if (op == 'I') {
+    bool first_token_maybe_count = true;
+    long long expected = -1;
+    std::string tok;
+    while (std::cin >> tok) {
+        // Handle a leading operation count
+        if (first_token_maybe_count) {
+            first_token_maybe_count = false;
+            char* endptr = nullptr;
+            long long maybe_num = std::strtoll(tok.c_str(), &endptr, 10);
+            if (endptr && *endptr == '\0') {
+                expected = maybe_num; // ignore enforcing, just informational
+                continue;
+            }
+        }
+
+        long long x;
+        if (!(std::cin >> x)) break;
+
+        if (tok.size() == 1) {
+            char op = tok[0];
+            if (op == 'I') {
+                sl.insert(x);
+            } else if (op == 'D') {
+                sl.deleteItem(x);
+            } else if (op == 'S' || op == '?') {
+                std::cout << (sl.search(x) ? 1 : 0) << '\n';
+            }
+            continue;
+        }
+
+        // Normalize token to lowercase
+        std::string low = tok;
+        for (auto &c : low) c = std::tolower(static_cast<unsigned char>(c));
+        if (low == "insert" || low == "ins" || low == "i") {
             sl.insert(x);
-        } else if (op == 'D') {
+        } else if (low == "delete" || low == "del" || low == "erase" || low == "remove" || low == "d") {
             sl.deleteItem(x);
-        } else if (op == 'S') {
+        } else if (low == "search" || low == "find" || low == "exists" || low == "s" || low == "?") {
             std::cout << (sl.search(x) ? 1 : 0) << '\n';
         }
     }
     return 0;
 }
-

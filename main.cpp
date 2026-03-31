@@ -33,9 +33,9 @@ int main(){
 
         if (tok.size() == 1) {
             char op = tok[0];
-            if (op == 'I') {
+            if (op == 'I' || op == '+') {
                 sl.insert(x);
-            } else if (op == 'D') {
+            } else if (op == 'D' || op == '-') {
                 sl.deleteItem(x);
             } else if (op == 'S' || op == '?') {
                 std::cout << (sl.search(x) ? 1 : 0) << '\n';
@@ -46,9 +46,9 @@ int main(){
         // Normalize token to lowercase
         std::string low = tok;
         for (auto &c : low) c = std::tolower(static_cast<unsigned char>(c));
-        if (low == "insert" || low == "ins" || low == "i") {
+        if (low == "insert" || low == "ins" || low == "i" || low == "+") {
             sl.insert(x);
-        } else if (low == "delete" || low == "del" || low == "erase" || low == "remove" || low == "d") {
+        } else if (low == "delete" || low == "del" || low == "erase" || low == "remove" || low == "d" || low == "-") {
             sl.deleteItem(x);
         } else if (low == "search" || low == "find" || low == "exists" || low == "s" || low == "?") {
             std::cout << (sl.search(x) ? 1 : 0) << '\n';
